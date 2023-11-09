@@ -1,6 +1,7 @@
 package pl.com.coders.shop2.repository;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pl.com.coders.shop2.domain.Product;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ public class ProductRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Transactional
     public Product add(Product product) {
         product.setCreated(LocalDateTime.now());
         product.setUpdated(LocalDateTime.now());
@@ -25,11 +27,14 @@ public class ProductRepository {
         return product;
     }
 
+    @Transactional
     public boolean delete(Long id) {
-        entityManager.remove(id);
+        Product toDeleteProduct = get(id);
+        entityManager.remove(toDeleteProduct);
         return true;
     }
 
+    @Transactional
     public Product update(Product product, Long id) {
         Product old = get(id);
         old.setName(product.getName());
