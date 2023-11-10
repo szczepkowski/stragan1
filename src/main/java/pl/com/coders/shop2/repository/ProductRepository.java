@@ -23,8 +23,7 @@ public class ProductRepository {
     }
 
     public Product get(Long id) {
-        Product product = entityManager.find(Product.class, id);
-        return product;
+        return entityManager.find(Product.class, id);
     }
 
     @Transactional
@@ -37,11 +36,14 @@ public class ProductRepository {
     @Transactional
     public Product update(Product product, Long id) {
         Product old = get(id);
+
         old.setName(product.getName());
         old.setDescription(product.getDescription());
         old.setPrice(product.getPrice());
         old.setQuantity(product.getQuantity());
+        old.setUpdated(LocalDateTime.now());
         entityManager.merge(old);
+
         return old;
     }
 
