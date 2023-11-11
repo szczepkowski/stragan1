@@ -23,8 +23,7 @@ public class ProductRepository {
     }
 
     public Product get(Long id) {
-        Product product = entityManager.find(Product.class, id);
-        return product;
+        return entityManager.find(Product.class, id);
     }
 
     @Transactional
