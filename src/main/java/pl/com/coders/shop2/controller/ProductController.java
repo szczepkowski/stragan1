@@ -1,8 +1,6 @@
 package pl.com.coders.shop2.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.com.coders.shop2.domain.Product;
 import pl.com.coders.shop2.service.ProductService;
