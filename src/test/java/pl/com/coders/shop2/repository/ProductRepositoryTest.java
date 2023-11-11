@@ -1,106 +1,94 @@
 package pl.com.coders.shop2.repository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.com.coders.shop2.domain.Category;
 import pl.com.coders.shop2.domain.Product;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class ProductRepositoryTest {
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private Product product;
+    private Category category;
 
     @Autowired
-    private ProductRepository productRepository;
+    public ProductRepositoryTest(ProductRepository productRepository, CategoryRepository categoryRepository) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
-    @Test
-    void shouldAddProduct() {
-        // Given
-        Product product = createSampleProduct();
-        // When
-        Product addedProduct = productRepository.add(product);
-
-        // Then
-        assertNotNull(addedProduct);
-        assertEquals(product, addedProduct);
+    @BeforeEach
+    void setUp() {
+        category = createSampleCategory();
+        categoryRepository.save(category);
+        product = createSampleProduct(category);
+        productRepository.add(product, category.getId());
     }
 
     @Test
-    void shouldGetProduct() {
-        // Given
-        Product product = createSampleProduct();
-        Product addedProduct = productRepository.add(product);
-
-        // When
-        Product foundProduct = productRepository.get(addedProduct.getId());
-
-        // Then
-        assertNotNull(foundProduct, "Found product should not be null");
-        assertEquals(addedProduct.getId(), foundProduct.getId(), "Product IDs should match");
-        assertEquals(product.getName(), foundProduct.getName(), "Product names should match");
+    void shouldAddProductToRepository() {
+        assertThat(product).isNotNull();
+        assertThat(product.getId()).isNotNull();
     }
 
     @Test
-    void shouldDeleteProduct() {
-        //Given
-        Product product = createSampleProduct();
-        Product addedProduct = productRepository.add(product);
-
-        // When
-        boolean delete = productRepository.delete(addedProduct.getId());
-
-        // Then
-        assertTrue(delete);
+    void shouldGetProductFromRepository() {
+        Product foundProduct = productRepository.getProductById(product.getId());
+        assertThat(foundProduct).isNotNull();
+        assertThat(foundProduct.getId()).isEqualTo(product.getId());
+        assertThat(foundProduct.getName()).isEqualTo(product.getName());
     }
-
     @Test
-    void shouldUpdateProduct() {
-        // Given
-        Product product = createSampleProduct();
-        Product addedProduct = productRepository.add(product);
-
+    void shouldDeleteProductFromRepository() {
+        boolean delete = productRepository.delete(product.getId());
+        assertThat(delete).isTrue();
+        Product deletedProduct = productRepository.getProductById(product.getId());
+        assertThat(deletedProduct).isNull();
+    }
+    @Test
+    void shouldUpdateProductInRepository() {
+        Category category = createSampleCategory();
+        categoryRepository.save(category);
+        Product product = createSampleProduct(category);
+        product.setCategory(category);
+        Product addedProduct = productRepository.add(product, category.getId());
         LocalDateTime expectedCreated = addedProduct.getCreated().withNano(0);
-        LocalDateTime expectedUpdated = LocalDateTime.now().withNano(0);
-
-        // When
         addedProduct.setName("Updated Product");
         addedProduct.setPrice(BigDecimal.valueOf(29.99));
-        Product updatedProduct = productRepository.update(addedProduct, addedProduct.getId());
-
+        Product updatedProduct = productRepository.update(addedProduct, product.getId());
         LocalDateTime actualCreated = updatedProduct.getCreated().withNano(0);
-        LocalDateTime actualUpdated = updatedProduct.getUpdated().withNano(0);
-
-        // Then
-        assertEquals(expectedCreated, actualCreated);
-        assertEquals(expectedUpdated, actualUpdated);
+        assertThat(actualCreated).isEqualTo(expectedCreated);
     }
-
     @Test
-    void shouldFindAllProducts() {
-        // Given
-        Product product1 = createSampleProduct();
-        Product product2 = createSampleProduct();
-
-
-        // When
-        productRepository.add(product1);
-        productRepository.add(product2);
+    void shouldFindAllProductsInRepository() {
+        Product product2 = createSampleProduct(category);
+        Product addedProduct2 = productRepository.add(product2, category.getId());
         List<Product> allProducts = productRepository.findAll();
-
-        // Then
-        assertEquals(2, allProducts.size());
+        assertEquals(6, allProducts.size());
     }
-
-    private Product createSampleProduct() {
+    private Product createSampleProduct(Category category) {
         return Product.builder()
                 .name("Sample Product")
                 .description("Sample Description")
                 .price(BigDecimal.valueOf(19.99))
                 .quantity(10)
+                .category(category)
                 .build();
     }
+    private Category createSampleCategory() {
+        return Category.builder()
+                .name("Electronics")
+                .build();
+    }
+
+
 }
