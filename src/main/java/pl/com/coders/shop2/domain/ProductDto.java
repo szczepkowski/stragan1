@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @EqualsAndHashCode(of = {"id"})
 
-public class Product {
+public class ProductDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
