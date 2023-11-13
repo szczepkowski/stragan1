@@ -54,7 +54,7 @@ class ProductControllerTest {
         objectMapper.registerModule(new JavaTimeModule());
         category = createSampleCategory();
         product = createSampleProduct(category);
-        when(productService.create(product, category.getId())).thenReturn(product);
+        when(productService.create(product)).thenReturn(product);
     }
 
     @Test
@@ -117,7 +117,7 @@ class ProductControllerTest {
         String json = objectMapper.writeValueAsString(updatedProduct);
 
         // When
-        when(productService.update((updatedProduct), (productId))).thenReturn(updatedProduct);
+        when(productService.update(updatedProduct)).thenReturn(updatedProduct);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/product/{id}", productId)
                         .contentType(MediaType.APPLICATION_JSON)

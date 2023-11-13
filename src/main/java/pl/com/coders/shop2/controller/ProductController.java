@@ -11,7 +11,7 @@ public class ProductController {
     private final ProductService productService;
     @PostMapping
     public Product create(@RequestBody Product product, Category category) {
-        return productService.create(product, category.getId());
+        return productService.create(product);
     }
     @GetMapping("/{id}")
     public Product get(@PathVariable Long id) {
@@ -22,7 +22,7 @@ public class ProductController {
         return productService.delete(id);
     }
     @PutMapping("/{id}")
-    public Product update(@RequestBody Product product, @PathVariable Long id ) {
-        return productService.update(product, id);
+    public Product update(@RequestBody Product product) {
+        return productService.update(product);
     }
 }

@@ -12,16 +12,20 @@ import java.util.Set;
     @NoArgsConstructor
     @Builder
     @EqualsAndHashCode
-    @ToString
     public class Category {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
-        @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         private Set<Product> products;
         private String name;
         @CreationTimestamp
         private LocalDateTime created;
         @UpdateTimestamp
         private LocalDateTime updated;
+
+        @Override
+        public String toString() {
+            return "Category{id=" + id + ", name='" + name + "}";
+        }
     }

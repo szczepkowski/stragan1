@@ -14,14 +14,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = {"id"})
-@ToString
 
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne()
-    @JoinColumn(name = "category_id", nullable = true)
+    @JoinColumn(name = "category_id")
     private Category category;
     private String name;
     private String description;
@@ -31,4 +30,17 @@ public class Product {
     private LocalDateTime created;
     @CreationTimestamp
     private LocalDateTime updated;
+
+    public Product(Category category, String name, String description, BigDecimal price, int quantity) {
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{id=" + id + ", name='" + name + "', price=" + price + "}";
+    }
 }

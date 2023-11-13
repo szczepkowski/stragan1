@@ -36,8 +36,8 @@ class ProductServiceTest {
 
     @Test
     void create() {
-        when(productRepository.add(inputProduct, categoryId)).thenReturn(inputProduct);
-        Product createdProduct = productService.create(inputProduct, category.getId());
+        when(productRepository.add(inputProduct)).thenReturn(inputProduct);
+        Product createdProduct = productService.create(inputProduct);
         assertNotNull(createdProduct);
     }
 
@@ -61,12 +61,12 @@ class ProductServiceTest {
     @Test
     void update() {
         Long productId = inputProduct.getId();
-        when(productRepository.update(inputProduct, productId)).thenReturn(inputProduct);
-        Product updatedProduct = productService.update(inputProduct, productId);
+        when(productRepository.update(inputProduct)).thenReturn(inputProduct);
+        Product updatedProduct = productService.update(inputProduct);
 
         assertNotNull(updatedProduct);
         assertSame(inputProduct, updatedProduct);
-        verify(productRepository, times(1)).update(inputProduct, productId);
+        verify(productRepository, times(1)).update(inputProduct);
     }
 
 

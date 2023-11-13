@@ -8,8 +8,8 @@ import pl.com.coders.shop2.repository.ProductRepository;
 @AllArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
-    public Product create(Product product, Long id) {
-        return productRepository.add(product, id);
+    public Product create(Product product) {
+        return productRepository.add(product);
     }
     public Product get(Long id) {
         return productRepository.getProductById(id);
@@ -17,7 +17,7 @@ public class ProductService {
     public boolean delete(Long id) {
         return productRepository.delete(id);
     }
-    public Product update(Product product, Long id) {
-        return productRepository.update(product, id);
+    public Product update(Product product) {
+        return productRepository.update(product);
     }
 }
