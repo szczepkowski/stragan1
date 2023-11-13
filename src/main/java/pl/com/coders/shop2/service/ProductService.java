@@ -17,7 +17,7 @@ public class ProductService {
     public boolean delete(Long id) {
         return productRepository.delete(id);
     }
-    public Product update(Product product) {
+    public Product update(Product product, Long id) {
         return productRepository.update(product);
     }
 }

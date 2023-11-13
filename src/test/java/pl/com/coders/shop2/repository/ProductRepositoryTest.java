@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ProductRepositoryTest {
@@ -50,7 +50,14 @@ class ProductRepositoryTest {
 
     @Test
     void shouldDeleteProductFromRepository() {
-
+//        Product existingProduct = productRepository.getProductById(250L);
+//        assertNotNull(existingProduct);
+//
+//        boolean deleteResult = productRepository.delete(250L);
+//        assertTrue(deleteResult);
+//
+//        Product deletedProduct = productRepository.getProductById(250L);
+//        assertNull(deletedProduct);
     }
 
     @Test

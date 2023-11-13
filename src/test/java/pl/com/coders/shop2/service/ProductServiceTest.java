@@ -62,7 +62,7 @@ class ProductServiceTest {
     void update() {
         Long productId = inputProduct.getId();
         when(productRepository.update(inputProduct)).thenReturn(inputProduct);
-        Product updatedProduct = productService.update(inputProduct);
+        Product updatedProduct = productService.update(inputProduct, productId);
 
         assertNotNull(updatedProduct);
         assertSame(inputProduct, updatedProduct);

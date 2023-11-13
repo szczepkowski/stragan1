@@ -59,14 +59,12 @@ class ProductControllerTest {
 
     @Test
     void create() throws Exception {
-        // When
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(product)))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Then
         String responseContent = result.getResponse().getContentAsString();
         Product responseProduct = objectMapper.readValue(responseContent, Product.class);
 
@@ -75,17 +73,13 @@ class ProductControllerTest {
 
     @Test
     void get() throws Exception {
-        // Given
         Long productId = 1L;
         when(productService.get((productId))).thenReturn(product);
 
-        // When
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", productId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-
-        // Then
         String json = result.getResponse().getContentAsString();
         Product responseProduct = objectMapper.readValue(json, Product.class);
         assertEquals(product, responseProduct);
@@ -97,27 +91,23 @@ class ProductControllerTest {
         long productId = 1L;
         when(productService.delete(productId)).thenReturn(true);
 
-        // When
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/product")
                         .param("id", String.valueOf(productId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Then
         String responseContent = mvcResult.getResponse().getContentAsString();
         assertNotNull(mvcResult);
     }
 
     @Test
     void update() throws Exception {
-        // Given
         Long productId = 1L;
         Product updatedProduct = createSampleProduct(category);
         String json = objectMapper.writeValueAsString(updatedProduct);
 
-        // When
-        when(productService.update(updatedProduct)).thenReturn(updatedProduct);
+        when(productService.update(updatedProduct, productId)).thenReturn(updatedProduct);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/product/{id}", productId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,10 +115,9 @@ class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Then
         String responseContent = result.getResponse().getContentAsString();
         Product responseProduct = objectMapper.readValue(responseContent, Product.class);
-        assertEquals(updatedProduct, responseProduct); // Porównaj zaktualizowany produkt z odpowiedzią
+        assertEquals(updatedProduct, responseProduct);
     }
 
 
@@ -146,5 +135,4 @@ class ProductControllerTest {
                 .name("Books")
                 .build();
     }
-
 }

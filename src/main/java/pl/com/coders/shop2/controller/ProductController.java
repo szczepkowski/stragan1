@@ -22,7 +22,7 @@ public class ProductController {
         return productService.delete(id);
     }
     @PutMapping("/{id}")
-    public Product update(@RequestBody Product product) {
-        return productService.update(product);
+    public Product update(@RequestBody Product product, @PathVariable Long id ) {
+        return productService.update(product, id);
     }
 }
