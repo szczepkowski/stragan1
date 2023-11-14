@@ -50,14 +50,11 @@ class ProductRepositoryTest {
 
     @Test
     void shouldDeleteProductFromRepository() {
-//        Product existingProduct = productRepository.getProductById(250L);
-//        assertNotNull(existingProduct);
-//
-//        boolean deleteResult = productRepository.delete(250L);
-//        assertTrue(deleteResult);
-//
-//        Product deletedProduct = productRepository.getProductById(250L);
-//        assertNull(deletedProduct);
+        Product existingProduct = productRepository.add(product);
+
+        boolean deleteResult = productRepository.delete(existingProduct.getId());
+        assertTrue(deleteResult);
+
     }
 
     @Test
@@ -80,7 +77,7 @@ class ProductRepositoryTest {
         Product product2 = createSampleProduct(category);
         productRepository.add(product2);
         List<Product> allProducts = productRepository.findAll();
-        assertEquals(28, allProducts.size());
+        assertEquals(29, allProducts.size());
     }
 
     private Product createSampleProduct(Category category) {
