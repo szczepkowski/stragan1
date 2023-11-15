@@ -24,7 +24,10 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -59,17 +62,20 @@ class ProductControllerTest {
 
     @Test
     void create() throws Exception {
+        when(productService.create(any())).thenReturn(product);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(product)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
         Product responseProduct = objectMapper.readValue(responseContent, Product.class);
 
         assertEquals(product, responseProduct);
+        verify(productService, times(1)).create(any());
     }
+
 
     @Test
     void get() throws Exception {
@@ -91,15 +97,14 @@ class ProductControllerTest {
         long productId = 1L;
         when(productService.delete(productId)).thenReturn(true);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/product")
-                        .param("id", String.valueOf(productId))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", productId)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+                .andExpect(status().isNoContent());
 
-        String responseContent = mvcResult.getResponse().getContentAsString();
-        assertNotNull(mvcResult);
+        verify(productService, times(1)).delete(productId);
     }
+
+
 
     @Test
     void update() throws Exception {

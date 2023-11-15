@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.com.coders.shop2.domain.Product;
 import pl.com.coders.shop2.repository.ProductRepository;
+
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProductService {
@@ -20,4 +23,6 @@ public class ProductService {
     public Product update(Product product, Long id) {
         return productRepository.update(product);
     }
+
+    public List<Product> getAll() {return productRepository.findAll();}
 }
