@@ -29,7 +29,7 @@ server:
 spring:
   datasource:
     username: postgres
-    password: 666666
+    password: postgres
     url: jdbc:postgresql://localhost:5432/shop
   jpa:
     open-in-view: 'false'
@@ -38,10 +38,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL92Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
   sql:
     init:
       mode: always
+  liquibase:
+    enabled: 'true'
+    change-log: classpath:liquibase-changeLog.xml
+
