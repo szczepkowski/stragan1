@@ -6,10 +6,13 @@ import pl.com.coders.shop2.domain.Category;
 import pl.com.coders.shop2.domain.Product;
 import pl.com.coders.shop2.exceptions.ProductWithGivenIdNotExistsException;
 import pl.com.coders.shop2.exceptions.ProductWithGivenTitleExistsException;
+import pl.com.coders.shop2.exceptions.ProductWithGivenTitleNotExistsException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductRepository {
@@ -23,12 +26,11 @@ public class ProductRepository {
 
     @Transactional
     public Product add(Product product) throws ProductWithGivenTitleExistsException {
-        if (product.getName() == null) {
-            throw new ProductWithGivenTitleExistsException("Product with the given title already exists.");
+        if (getProductByName(product.getName()).isPresent()) {
+            throw new ProductWithGivenTitleExistsException("message");
         }
         return entityManager.merge(product);
     }
-
 
     public Product getProductById(Long id) throws ProductWithGivenIdNotExistsException {
         Product product = entityManager.find(Product.class, id);
@@ -75,5 +77,13 @@ public class ProductRepository {
     @Transactional
     public void deleteAll() {
         entityManager.createQuery("DELETE FROM Product").executeUpdate();
+    }
+
+    private Optional<Product> getProductByName(String name) {
+        String jpql = "SELECT p FROM Product p WHERE p.name = :name";
+        TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class)
+                .setParameter("name", name);
+        Optional<Product> first = query.getResultStream().findFirst();
+        return first;
     }
 }

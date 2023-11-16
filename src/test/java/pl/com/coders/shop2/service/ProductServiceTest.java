@@ -36,14 +36,14 @@ class ProductServiceTest {
 
     @Test
     void create() {
-        when(productRepository.add(inputProduct)).thenReturn(inputProduct);
+        when(productRepository.add(any())).thenReturn(inputProduct);
         Product createdProduct = productService.create(inputProduct);
         assertNotNull(createdProduct);
     }
 
     @Test
     void get() {
-        when(productRepository.getProductById(inputProduct.getId())).thenReturn(inputProduct);
+        when(productRepository.getProductById(any())).thenReturn(inputProduct);
         Product resultProduct = productService.get(inputProduct.getId());
         assertNotNull(resultProduct);
         assertSame(inputProduct, resultProduct);
@@ -68,7 +68,6 @@ class ProductServiceTest {
         assertSame(inputProduct, updatedProduct);
         verify(productRepository, times(1)).update(inputProduct);
     }
-
 
     private Product createSampleProduct(Category category) {
         return Product.builder()

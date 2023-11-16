@@ -20,7 +20,6 @@ public class FakeCategoryGenerator {
         this.categoryRepository = categoryRepository;
     }
 
-@PostConstruct
     public List<Category> initCategory() {
         categoryRepository.deleteAll();
         List<Category> categories = generateFakeCategories(10);

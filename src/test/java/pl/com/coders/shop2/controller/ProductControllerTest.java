@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.com.coders.shop2.domain.Category;
 import pl.com.coders.shop2.domain.Product;
@@ -46,8 +47,6 @@ class ProductControllerTest {
     @MockBean
     private ProductService productService;
 
-    @MockBean
-    private ProductRepository productRepository;
     private Category category;
     private Product product;
 
@@ -140,4 +139,5 @@ class ProductControllerTest {
                 .name("Books")
                 .build();
     }
+
 }

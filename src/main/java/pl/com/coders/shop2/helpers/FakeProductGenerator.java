@@ -26,7 +26,7 @@ public class FakeProductGenerator {
         this.categoryRepository = categoryRepository;
     }
 
-    @PostConstruct
+
     public void initProduct() {
         productRepository.deleteAll();
         List<Product> fakeProducts = generateFakeProducts(10);
@@ -44,7 +44,6 @@ public class FakeProductGenerator {
         String description = faker.lorem().sentence();
         BigDecimal price = BigDecimal.valueOf(faker.number().randomDouble(2, 100, 2000));
         int quantity = faker.number().numberBetween(1, 10);
-
         Product product = new Product(randomCategory, name, description, price, quantity);
         productRepository.add(product);
 

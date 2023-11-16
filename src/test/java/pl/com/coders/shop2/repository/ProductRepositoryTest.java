@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class ProductRepositoryTest {
@@ -51,7 +52,6 @@ class ProductRepositoryTest {
     @Test
     void shouldDeleteProductFromRepository() {
         Product existingProduct = productRepository.add(product);
-
         boolean deleteResult = productRepository.delete(existingProduct.getId());
         assertTrue(deleteResult);
 
@@ -79,6 +79,22 @@ class ProductRepositoryTest {
         List<Product> allProducts = productRepository.findAll();
         assertEquals(29, allProducts.size());
     }
+
+//    @Test
+//    void add_WithNullProductName_ShouldThrowException() {
+//        Product product = new Product();
+//        assertThrows(ProductWithGivenTitleExistsException.class, () -> productRepository.add(product));
+//    }
+//
+//    @Test
+//    void getProductById_WithNonExistingId_ShouldThrowException() {
+//        Long nonExistingId = 1L;
+//        when(productRepository.getProductById(eq(nonExistingId))).thenReturn(null);
+//
+//        assertThrows(ProductWithGivenIdNotExistsException.class, () -> {
+//            productRepository.getProductById(nonExistingId);
+//        });
+
 
     private Product createSampleProduct(Category category) {
         return Product.builder()
