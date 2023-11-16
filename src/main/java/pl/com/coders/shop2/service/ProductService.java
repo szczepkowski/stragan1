@@ -5,26 +5,24 @@ import org.springframework.stereotype.Service;
 import pl.com.coders.shop2.domain.Product;
 import pl.com.coders.shop2.repository.ProductRepository;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProductService {
-
     private final ProductRepository productRepository;
-
     public Product create(Product product) {
-        Product addedProduct = productRepository.add(product);
-        return addedProduct;
+        return productRepository.add(product);
     }
-
     public Product get(Long id) {
-        return productRepository.get(id);
+        return productRepository.getProductById(id);
     }
-
     public boolean delete(Long id) {
         return productRepository.delete(id);
     }
-
     public Product update(Product product, Long id) {
-        return productRepository.update(product,id);
+        return productRepository.update(product);
     }
+
+    public List<Product> getAll() {return productRepository.findAll();}
 }
