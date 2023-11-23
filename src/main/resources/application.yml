@@ -25,11 +25,11 @@
 
 
 server:
-  port: 8080
+  port: 8083
 spring:
   datasource:
     username: postgres
-    password: postgres
+    password: Samtelus77
     url: jdbc:postgresql://localhost:5432/shop
   jpa:
     open-in-view: 'false'
